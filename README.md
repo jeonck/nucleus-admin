@@ -35,7 +35,7 @@ OmniAdmin은 NVIDIA Omniverse Nucleus를 위한 현대적인 웹 기반 관리 �
 
 1. 저장소 클론
    ```bash
-   git clone https://github.com/your-organization/omni-admin.git
+   git clone https://github.com/jeonck/nucleus-admin.git
    cd omni-admin
    ```
 
@@ -46,10 +46,10 @@ OmniAdmin은 NVIDIA Omniverse Nucleus를 위한 현대적인 웹 기반 관리 �
 
 3. 개발 서버 실행
    ```bash
-   npm start
+   npm run dev
    ```
 
-4. 브라우저에서 접속: `http://localhost:3000`
+4. 브라우저에서 접속: `http://localhost:5173`
 
 ### 프로덕션 빌드
 
@@ -110,10 +110,4 @@ OmniAdmin은 NVIDIA Omniverse Nucleus API와 통합됩니다. 실제 서버와 �
 
 ## 라이선스
 
-이 프로젝트는 MIT 라이선스로 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 연락처
-
-- 프로젝트 관리자: [이메일](mailto:admin@example.com)
-- 이슈 트래커: [GitHub Issues](https://github.com/your-organization/omni-admin/issues)
-# nucleus-admin
+이 프로젝트는 MIT 라이선스로 배포됩니다. 
