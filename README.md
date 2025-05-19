@@ -2,7 +2,7 @@
 
 OmniAdmin은 NVIDIA Omniverse Nucleus를 위한 현대적인 웹 기반 관리 인터페이스입니다. React와 Tailwind CSS를 사용하여 개발되었으며, Nucleus 서버의 모니터링, 관리, 구성을 위한 직관적인 UI를 제공합니다.
 
-![OmniAdmin Dashboard](dashboard_preview.png)
+![image](https://github.com/user-attachments/assets/e8a8fd0c-a6c0-4a8e-9e4a-718322482b56)
 
 ## 주요 기능
 
