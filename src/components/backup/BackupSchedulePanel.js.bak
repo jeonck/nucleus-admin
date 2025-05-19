@@ -1,0 +1,174 @@
+import React, { useState } from 'react';
+import { Clock, Calendar, Save } from 'lucide-react';
+
+const BackupSchedulePanel = ({ darkMode }) => {
+  const [schedule, setSchedule] = useState({
+    frequency: 'daily',
+    time: '01:00',
+    retention: '30',
+    target: 's3',
+    path: 'S3://nucleus-backup/',
+    enabled: true
+  });
+
+  // 스케줄 변경 핸들러
+  const handleScheduleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setSchedule({
+      ...schedule,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+
+  // 스케줄 저장 핸들러
+  const handleSaveSchedule = () => {
+    console.log('백업 스케줄 저장:', schedule);
+    // 실제로는 여기서 API 호출
+  };
+
+  // 수동 백업 실행 핸들러
+  const handleRunBackup = () => {
+    console.log('수동 백업 실행');
+    // 실제로는 여기서 API 호출
+  };
+
+  return (
+    <div className={`p-4 rounded shadow ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'}`}>
+      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>백업 스케줄</h3>
+      
+      <div className="space-y-4">
+        {/* 백업 활성화 */}
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="enabled"
+            name="enabled"
+            checked={schedule.enabled}
+            onChange={handleScheduleChange}
+            className="mr-2"
+          />
+          <label htmlFor="enabled" className="text-sm font-medium">자동 백업 활성화</label>
+        </div>
+        
+        {/* 백업 주기 */}
+        <div>
+          <label className="block text-sm font-medium mb-1">백업 주기</label>
+          <select
+            name="frequency"
+            value={schedule.frequency}
+            onChange={handleScheduleChange}
+            className={`w-full p-2 border rounded ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'border-gray-300'}`}
+            disabled={!schedule.enabled}
+          >
+            <option value="hourly">시간마다</option>
+            <option value="daily">매일</option>
+            <option value="weekly">매주</option>
+            <option value="monthly">매월</option>
+          </select>
+        </div>
+        
+        {/* 백업 시간 */}
+        <div>
+          <label className="block text-sm font-medium mb-1">백업 시간</label>
+          <input
+            type="time"
+            name="time"
+            value={schedule.time}
+            onChange={handleScheduleChange}
+            className={`w-full p-2 border rounded ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'border-gray-300'}`}
+            disabled={!schedule.enabled || schedule.frequency === 'hourly'}
+          />
+        </div>
+        
+        {/* 보관 기간 */}
+        <div>
+          <label className="block text-sm font-medium mb-1">백업 보관 기간 (일)</label>
+          <input
+            type="number"
+            name="retention"
+            value={schedule.retention}
+            onChange={handleScheduleChange}
+            min="1"
+            max="365"
+            className={`w-full p-2 border rounded ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'border-gray-300'}`}
+            disabled={!schedule.enabled}
+          />
+        </div>
+        
+        {/* 백업 대상 */}
+        <div>
+          <label className="block text-sm font-medium mb-1">백업 대상</label>
+          <select
+            name="target"
+            value={schedule.target}
+            onChange={handleScheduleChange}
+            className={`w-full p-2 border rounded ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'border-gray-300'}`}
+            disabled={!schedule.enabled}
+          >
+            <option value="local">로컬 디스크</option>
+            <option value="s3">Amazon S3</option>
+            <option value="gcs">Google Cloud Storage</option>
+            <option value="azure">Azure Blob Storage</option>
+          </select>
+        </div>
+        
+        {/* 백업 경로 */}
+        <div>
+          <label className="block text-sm font-medium mb-1">백업 경로</label>
+          <input
+            type="text"
+            name="path"
+            value={schedule.path}
+            onChange={handleScheduleChange}
+            className={`w-full p-2 border rounded font-mono text-sm ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'border-gray-300'}`}
+            disabled={!schedule.enabled}
+          />
+        </div>
+        
+        {/* 버튼 영역 */}
+        <div className="flex space-x-2 pt-2">
+          <button
+            onClick={handleSaveSchedule}
+            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+            disabled={!schedule.enabled}
+          >
+            <Save size={16} className="mr-1" />
+            설정 저장
+          </button>
+          <button
+            onClick={handleRunBackup}
+            className={`flex-1 ${darkMode 
+              ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+              : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} py-2 px-4 rounded`}
+          >
+            지금 백업
+          </button>
+        </div>
+      </div>
+      
+      {/* 다음 예정 백업 */}
+      {schedule.enabled && (
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center">
+            <Clock size={16} className="mr-2 text-blue-500" />
+            <span className="text-sm">
+              다음 예정 백업: <strong>2023-03-11 {schedule.time}</strong>
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BackupSchedulePanel;

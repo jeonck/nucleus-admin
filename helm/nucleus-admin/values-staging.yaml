@@ -1,0 +1,35 @@
+# Staging 환경을 위한 값
+replicaCount: 2
+
+image:
+  repository: your-private-registry.example.com/nucleus-admin
+  tag: "staging"
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 75m
+    memory: 128Mi
+
+ingress:
+  hosts:
+    - host: admin.nucleus-staging.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: nucleus-admin-staging-tls
+      hosts:
+        - admin.nucleus-staging.example.com
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 75
+
+env:
+  API_URL: "https://api.nucleus-staging.example.com"
+  LOG_LEVEL: "info"

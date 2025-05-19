@@ -1,0 +1,32 @@
+# Dev 환경을 위한 값
+replicaCount: 1
+
+image:
+  repository: your-private-registry.example.com/nucleus-admin
+  tag: "dev"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 200Mi
+  requests:
+    cpu: 50m
+    memory: 100Mi
+
+ingress:
+  hosts:
+    - host: admin.nucleus-dev.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: nucleus-admin-dev-tls
+      hosts:
+        - admin.nucleus-dev.example.com
+
+autoscaling:
+  enabled: false
+
+env:
+  API_URL: "https://api.nucleus-dev.example.com"
+  LOG_LEVEL: "debug"

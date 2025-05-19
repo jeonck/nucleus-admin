@@ -1,0 +1,36 @@
+# Production 환경을 위한 값
+replicaCount: 3
+
+image:
+  repository: your-private-registry.example.com/nucleus-admin
+  tag: "stable"
+
+resources:
+  limits:
+    cpu: 400m
+    memory: 512Mi
+  requests:
+    cpu: 150m
+    memory: 256Mi
+
+ingress:
+  hosts:
+    - host: admin.nucleus.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: nucleus-admin-tls
+      hosts:
+        - admin.nucleus.example.com
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 15
+  targetCPUUtilizationPercentage: 65
+  targetMemoryUtilizationPercentage: 75
+
+env:
+  API_URL: "https://api.nucleus.example.com"
+  LOG_LEVEL: "warn"

@@ -1,0 +1,48 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nucleus-admin-alerts
+  namespace: nucleus-system
+  labels:
+    app: nucleus-admin
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+  - name: nucleus-admin.rules
+    rules:
+    - alert: NucleusAdminHighCpuUsage
+      expr: sum(rate(container_cpu_usage_seconds_total{namespace="nucleus-system", container="nucleus-admin"}[5m])) > 0.8 * sum(kube_pod_container_resource_limits_cpu_cores{namespace="nucleus-system", container="nucleus-admin"})
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU usage detected"
+        description: "Nucleus Admin is using more than 80% of its CPU limit for more than 10 minutes."
+        
+    - alert: NucleusAdminHighMemoryUsage
+      expr: sum(container_memory_usage_bytes{namespace="nucleus-system", container="nucleus-admin"}) > 0.8 * sum(kube_pod_container_resource_limits_memory_bytes{namespace="nucleus-system", container="nucleus-admin"})
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage detected"
+        description: "Nucleus Admin is using more than 80% of its memory limit for more than 10 minutes."
+        
+    - alert: NucleusAdminHighErrorRate
+      expr: sum(rate(nginx_http_requests_total{namespace="nucleus-system", service="nucleus-admin", status=~"5.."}[5m])) / sum(rate(nginx_http_requests_total{namespace="nucleus-system", service="nucleus-admin"}[5m])) * 100 > 5
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "High HTTP error rate"
+        description: "Nucleus Admin is experiencing more than 5% error rate over the last 5 minutes."
+        
+    - alert: NucleusAdminSlowResponseTime
+      expr: histogram_quantile(0.95, sum(rate(nginx_http_request_duration_seconds_bucket{namespace="nucleus-system", service="nucleus-admin"}[5m])) by (le)) > 2
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Slow response times"
+        description: "95th percentile of response time is above 2 seconds for more than 5 minutes."

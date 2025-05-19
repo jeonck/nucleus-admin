@@ -1,0 +1,20 @@
+apiVersion: v2
+name: nucleus-admin
+description: A Helm chart for Nucleus Admin Dashboard
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+icon: https://raw.githubusercontent.com/your-org/nucleus-admin/main/public/logo.png
+home: https://github.com/your-org/nucleus-admin
+maintainers:
+  - name: DevOps Team
+    email: devops@example.com
+
+dependencies: []
+
+# 자세한 커스터마이제이션 지원
+keywords:
+  - nucleus
+  - admin
+  - dashboard

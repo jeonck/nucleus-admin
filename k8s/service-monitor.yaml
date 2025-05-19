@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nucleus-admin
+  namespace: nucleus-system
+  labels:
+    app: nucleus-admin
+    release: prometheus  # Prometheus 연동을 위한 라벨
+spec:
+  selector:
+    matchLabels:
+      app: nucleus-admin
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 15s
+    scrapeTimeout: 5s
+  namespaceSelector:
+    matchNames:
+    - nucleus-system

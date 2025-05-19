@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nucleus-admin-staging
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/nucleus-admin.git
+    targetRevision: HEAD
+    path: helm/nucleus-admin
+    helm:
+      valueFiles:
+      - values-staging.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nucleus-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

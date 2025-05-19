@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nucleus-admin-config
+  namespace: nucleus-system
+data:
+  API_URL: "https://api.nucleus-internal.example.com"
+  LOG_LEVEL: "info"
